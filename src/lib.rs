@@ -63,6 +63,9 @@ macro_rules! binary_ops {
 /// All methods from the [`Float`] type are supported by this wrapper in checked context.
 /// For documentation, see the original method definitions in [`Float`].
 ///
+/// [`CheckedFloat`] also supports an implementation of [`Ord`], which allows for directly sorting [`CheckedFloat`] collections.
+/// The convention for this implementation has ordering `-NaN < -Inf < ... < -0 = +0 < ... < +Inf < +NaN`.
+///
 /// [`CheckedFloat::get`] can be used to get the underlying float value.
 pub struct CheckedFloat<T: Float, C: FloatChecker<T>>(T, PhantomData<C>);
 impl<T: Float, C: FloatChecker<T>> CheckedFloat<T, C> {
@@ -86,7 +89,7 @@ impl<T: Float, C: FloatChecker<T>> CheckedFloat<T, C> {
     }
     binary_ops! {
         abs_sub: other, add: other, atan2: other, div: other, hypot: other, log: base,
-        max: other, min: other, mul: other, powf: n, rem: other, sub: other,
+        mul: other, powf: n, rem: other, sub: other,
     }
     pub fn mul_add(self, a: Self, b: Self) -> Result<Self, C::Error> {
         Self::new(self.0.mul_add(a.0, b.0))

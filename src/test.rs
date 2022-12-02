@@ -44,4 +44,17 @@ fn test_ord_eq() {
     assert_eq!(F64::new(-1.0).unwrap().cmp(&F64::new(2.0).unwrap()), Ordering::Less);
     assert_eq!(F64::new(1.0).unwrap().cmp(&F64::new(-2.0).unwrap()), Ordering::Greater);
     assert_eq!(F64::new(-1.0).unwrap().cmp(&F64::new(-2.0).unwrap()), Ordering::Greater);
+
+    assert_eq!(F64::new(f64::NAN).unwrap().max(F64::new(f64::INFINITY).unwrap()), F64::new(f64::NAN).unwrap());
+    assert_eq!(F64::new(f64::INFINITY).unwrap().max(F64::new(f64::NAN).unwrap()), F64::new(f64::NAN).unwrap());
+
+    assert_eq!(F64::new(-f64::NAN).unwrap().min(F64::new(f64::NEG_INFINITY).unwrap()), F64::new(-f64::NAN).unwrap());
+    assert_eq!(F64::new(f64::NEG_INFINITY).unwrap().min(F64::new(-f64::NAN).unwrap()), F64::new(-f64::NAN).unwrap());
+
+    assert!(F64::new(0.0).unwrap().is_sign_positive());
+    assert!(F64::new(-0.0).unwrap().is_sign_negative());
+    assert!(F64::new(0.0).unwrap().neg().unwrap().is_sign_negative());
+    assert!(F64::new(-0.0).unwrap().neg().unwrap().is_sign_positive());
+
+    assert_eq!(F64::new(0.0).unwrap(), F64::new(-0.0).unwrap());
 }
