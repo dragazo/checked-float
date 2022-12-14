@@ -53,7 +53,7 @@ macro_rules! binary_ops {
 /// A checked floating point type.
 ///
 /// Every instance of [`CheckedFloat`] is guaranteed to satisfy the property given by the provided [`FloatChecker`].
-/// In particular, this can be used to have a floating point type the forbids values like
+/// In particular, this can be used to have a floating point type that forbids values like
 /// NaN, infinity, negatives, etc. all by providing different checkers.
 ///
 /// [`CheckedFloat`] supports all the typical operations of a normal float type.
