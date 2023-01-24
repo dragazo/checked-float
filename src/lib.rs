@@ -85,7 +85,7 @@ impl<T: Float, C: FloatChecker<T>> CheckedFloat<T, C> {
     unary_ops! {
         abs, acos, acosh, asin, asinh, atan, atanh, cbrt, ceil, cos, cosh,
         exp, exp2, exp_m1, floor, fract, ln, ln_1p, log10, log2, neg, recip,
-        round, signum, sin, sinh, sqrt, tan, tanh, trunc,
+        round, signum, sin, sinh, sqrt, tan, tanh, trunc, to_degrees, to_radians,
     }
     binary_ops! {
         abs_sub: other, add: other, atan2: other, div: other, hypot: other, log: base,
