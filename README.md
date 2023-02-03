@@ -37,3 +37,10 @@ a dependency on `std` is ever added.
 [dependencies]
 checked-float = { version = "...", default-features = false }
 ```
+
+## Features
+
+
+| name | default | description |
+| ---- | ------- | ----------- |
+| `serde` | off | Enables serialization of [`CheckedFloat`] |
