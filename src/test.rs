@@ -5,11 +5,19 @@ impl<T: Float> FloatChecker<T> for NoopChecker {
     type Error = ();
     fn check(_: T) -> Result<(), Self::Error> { Ok(()) }
 }
+type F64 = CheckedFloat<f64, NoopChecker>;
+
+#[test]
+fn test_copy() {
+    let u = F64::new(6.5).unwrap();
+    let v = u;
+    assert_eq!(u.get(), 6.5);
+    assert_eq!(v.get(), 6.5);
+    assert_eq!(u.get(), v.get());
+}
 
 #[test]
 fn test_ord_eq() {
-    type F64 = CheckedFloat<f64, NoopChecker>;
-
     assert_eq!(F64::new(f64::NAN).unwrap().eq(&F64::new(f64::NAN).unwrap()), true);
     assert_eq!(F64::new(f64::NAN).unwrap().eq(&F64::new(-f64::NAN).unwrap()), false);
     assert_eq!(F64::new(-f64::NAN).unwrap().eq(&F64::new(f64::NAN).unwrap()), false);
