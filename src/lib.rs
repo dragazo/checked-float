@@ -82,9 +82,11 @@ impl<T: Float, C: FloatChecker<T>> CheckedFloat<T, C> {
     prop_ops! {
         classify: FpCategory, integer_decode: (u64, i16, i8), is_finite: bool, is_infinite: bool,
         is_nan: bool, is_normal: bool, is_sign_negative: bool, is_sign_positive: bool,
+        is_zero: bool, is_one: bool,
     }
     noarg_ops! {
-        infinity, max_value, min_positive_value, min_value, nan, neg_infinity, neg_zero,
+        infinity, max_value, min_positive_value, min_value, nan, neg_infinity, neg_zero, zero,
+        one, epsilon,
     }
     unary_ops! {
         abs, acos, acosh, asin, asinh, atan, atanh, cbrt, ceil, cos, cosh,
@@ -93,7 +95,7 @@ impl<T: Float, C: FloatChecker<T>> CheckedFloat<T, C> {
     }
     binary_ops! {
         abs_sub: other, add: other, atan2: other, div: other, hypot: other, log: base,
-        mul: other, powf: n, rem: other, sub: other,
+        mul: other, powf: n, rem: other, sub: other, copysign: sign,
     }
     pub fn mul_add(self, a: Self, b: Self) -> Result<Self, C::Error> {
         Self::new(self.0.mul_add(a.0, b.0))
