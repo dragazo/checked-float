@@ -20,8 +20,10 @@ use serde::{Serialize, Deserialize};
 pub trait FloatChecker<T: Float> {
     /// A custom error resulting from a violated property check.
     type Error;
+
     /// Checks if a value satisfies a property.
-    fn check(value: T) -> Result<(), Self::Error>;
+    /// The checker is allowed to alter the returned value to be stored (e.g., to apply modulo logic).
+    fn check(value: T) -> Result<T, Self::Error>;
 }
 
 macro_rules! prop_ops {
@@ -74,7 +76,7 @@ macro_rules! binary_ops {
 pub struct CheckedFloat<T: Float, C: FloatChecker<T>>(T, PhantomData<C>);
 impl<T: Float, C: FloatChecker<T>> CheckedFloat<T, C> {
     pub fn new(value: T) -> Result<Self, C::Error> {
-        C::check(value).map(|_| Self(value, PhantomData))
+        C::check(value).map(|x| Self(x, PhantomData))
     }
     pub fn get(self) -> T {
         self.0

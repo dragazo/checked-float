@@ -3,9 +3,22 @@ use super::*;
 struct NoopChecker;
 impl<T: Float> FloatChecker<T> for NoopChecker {
     type Error = ();
-    fn check(_: T) -> Result<(), Self::Error> { Ok(()) }
+    fn check(x: T) -> Result<T, Self::Error> { Ok(x) }
 }
 type F64 = CheckedFloat<f64, NoopChecker>;
+
+struct AbsChecker;
+impl<T: Float> FloatChecker<T> for AbsChecker {
+    type Error = T;
+    fn check(value: T) -> Result<T, Self::Error> {
+        if !value.is_nan() {
+            Ok(value.abs())
+        } else {
+            Err(value)
+        }
+    }
+}
+type AbsF64 = CheckedFloat<f64, AbsChecker>;
 
 #[test]
 fn test_copy() {
@@ -65,4 +78,11 @@ fn test_ord_eq() {
     assert!(F64::new(-0.0).unwrap().neg().unwrap().is_sign_positive());
 
     assert_eq!(F64::new(0.0).unwrap(), F64::new(-0.0).unwrap());
+}
+
+#[test]
+fn test_mapper() {
+    assert_eq!(AbsF64::new(12.0).unwrap(), AbsF64::new(12.0).unwrap());
+    assert_eq!(AbsF64::new(12.0).unwrap(), AbsF64::new(-12.0).unwrap());
+    assert!(AbsF64::new(core::f64::NAN).is_err());
 }

@@ -14,8 +14,8 @@ struct NanError;
 struct NoNanChecker;
 impl<T: Float> FloatChecker<T> for NoNanChecker {
     type Error = NanError;
-    fn check(value: T) -> Result<(), Self::Error> {
-        if value.is_nan() { Err(NanError) } else { Ok(()) }
+    fn check(value: T) -> Result<T, Self::Error> {
+        if value.is_nan() { Err(NanError) } else { Ok(value) }
     }
 }
 
